@@ -1,8 +1,10 @@
 class DnaSeq:
-    """    A class representing a DNA sequence with an accession number and the sequence itself."""
     def __init__(self, accession, seq):
+        """Initializes a DnaSeq object with an accession number and a sequence."""
+        # Ensure that both accession and seq are non-empty strings
         if not accession or not seq:
             raise ValueError("Both accession and seq must be non-empty")
+        # Check that accession and seq are ia able to be converted to strings
         try:
             self.accession = str(accession)
             self.seq = str(seq)
