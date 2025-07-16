@@ -102,10 +102,10 @@ def polynomial_to_list(terms_list):
 def drop_zeroes(p_list):
     """Function that takes a polynomial in list form (input) and returns a polynomial in list form without zeros in the end (output)
     Input example:   [2,0,1,0]    Output example:  [2,0,1]"""
-    new_list = p_list
-    while new_list and new_list[-1] == 0:
-        new_list.pop(-1)
-    return new_list
+    i = len(p_list)
+    while i > 0 and p_list[i-1] == 0:
+        i -= 1
+    return p_list[:i]
 
 
 def eq_poly(p_list,q_list):
