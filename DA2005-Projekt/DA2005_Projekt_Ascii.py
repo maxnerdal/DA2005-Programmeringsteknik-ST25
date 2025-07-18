@@ -1,51 +1,38 @@
-# DA2005_Projekt_Ascii.py
 from PIL import Image
-import sys
 import unittest
 
-# Try to import test class
 try:
-    from Test_Project import TestAsciiArtProject  # Import the class from file
-except ImportError as e:
-    print(f"ImportError while importing Test_Project: {e}")
-    TestAsciiArt = None
+    from Test_Project import TestAsciiArtProject
+except ImportError:
+    TestAsciiArtProject = None
 
 def load_image(filename):
-    """Load an image from the given filename."""
     try:
-        img = Image.open(filename)
-        img.load()
-        # Return the loaded image
-        return img
-    except FileNotFoundError:
-        print(f"Error: File '{filename}' not found.")
-    except IsADirectoryError:
-        print(f"Error: '{filename}' is a directory, not a file.")
-    except PermissionError:
-        print(f"Error: No permission to read '{filename}'.")
-    except (Image.UnidentifiedImageError, OSError):
-        print(f"Error: '{filename}' is not a valid image file or has an unsupported format.")
-    except Exception as e:
-        print(f"Error loading image '{filename}': {e}")
-    # Return None if loading fails
-    return None
+        return Image.open(filename)
+    except:
+        print(f"Error: Could not load '{filename}'")
+        return None
 
 def build_ascii_art(pixels, width, height):
     """Build the ASCII art string from pixel data."""
-    ascii_chars = "@%#*+=-:. " # ASCII characters from dark to light
-    ascii_str = ""
-    for y in range(height):
-        row = ""
-        for x in range(width):
-            # list pixels is a flat list of pixel values (0-255).
-            # y * width gives the index of the first pixel in row y.
-            # x finds the pixel within that row.
-            pixel = pixels[y * width + x]
-            char = ascii_chars[pixel * (len(ascii_chars) - 1) // 255]
-            row += char
-        # Add the finished row to the ASCII art string, with a newline
-        ascii_str += row + "\n"
-    return ascii_str
+    try:
+        ascii_chars = "@%#*+=-:. " # ASCII characters from dark to light
+        ascii_str = ""
+        for y in range(height):
+            row = ""
+            for x in range(width):
+                # list pixels is a flat list of pixel values (0-255).
+                # y * width gives the index of the first pixel in row y.
+                # x finds the pixel within that row.
+                pixel = pixels[y * width + x]
+                char = ascii_chars[pixel * (len(ascii_chars) - 1) // 255]
+                row += char
+            # Add the finished row to the ASCII art string, with a newline
+            ascii_str += row + "\n"
+        return ascii_str
+    except Exception as e:
+        print(f"Unexpected error in build_ascii_art")
+        return ""
 
 def render_ascii_image(img, width=50):
     """Render the loaded image as ASCII art."""
@@ -77,7 +64,7 @@ def render_ascii_image(img, width=50):
         art_str = build_ascii_art(pixels, width, new_height) # Call function build_ascii_art()
         return art_str
     except Exception as e:
-        print(f"Error rendering ASCII image: {e}")
+        print(f"Unexpected error rendering ASCII image")
         return None
 
 def info(img, filename=None):
@@ -116,6 +103,7 @@ def prompt_for_image():
             print("Please try again.")
 
 def run_tests():
+    """Run the unit tests for the ASCII art project."""
     if TestAsciiArtProject is not None:
         suite = unittest.TestLoader().loadTestsFromTestCase(TestAsciiArtProject)
         unittest.TextTestRunner(verbosity=2).run(suite)
@@ -123,18 +111,20 @@ def run_tests():
         print("Test class not found. Make sure test_DA2005_Projekt_Ascii.py is available.")
 
 def main():
+    """Main function to run the ASCII Art Studio."""
     try:
-        print("Starting tests...")
+        # Start by running the tests
+        print("\nStarting tests...\n")
         run_tests()
-        print("Tests complete. Starting ASCII Art Studio...")
+        print("\nTests complete. Starting ASCII Art Studio...\n")
 
         # Console output for user interaction
-        print("Welcome to ASCII Art Studio!")
+        print("Welcome to ASCII Art Studio!\n")
         print("1. Load image")
         print("2. Render ASCII art")
         print("3. Show image info")
         print("4. Show menu")
-        print("5. Quit")
+        print("5. Quit\n")
 
         # Initialize variables
         action_input = ""
