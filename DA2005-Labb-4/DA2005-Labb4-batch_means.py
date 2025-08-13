@@ -4,6 +4,7 @@
 # AI: Github Copilot integrated to Visual Studio Code
 # Most of the code from the plot_data function is taken from github Copilot. 
 
+
 import matplotlib.pyplot as plt    
 import math
 
@@ -43,16 +44,28 @@ def insert_sample_to_dict(list,dict):
 def calculate_average(batch,sample):
     """
     Takes a list of samples and calculates the average of the third value in each sample.
+    Only includes samples that are within the unit circle (x² + y² ≤ 1).
     Returns the average as a float.
-    If there are no samples, returns None.
+    If there are no valid samples, returns None.
     """
     # uppgift 1 - uträkningen av medelvärde är flyttad till en egen funktion calculate_average
     # uppgift 2 - Lagt till exception handling för att hantera division med noll & unexpected errors
+    # Komplettering - Filter out samples outside the unit circle
     if not sample:
         return None
     try:
-        total = sum(sample[2] for sample in sample)
-        average = total / len(sample)
+        # Filter samples to only include those within the unit circle
+        valid_samples = []
+        for x, y, val in sample:
+            if x*x + y*y <= 1:  # Check if point is within unit circle
+                valid_samples.append(val)
+        
+        if not valid_samples:
+            print(f"Warning: No valid samples within unit circle for batch {batch}")
+            return None
+            
+        total = sum(valid_samples)
+        average = total / len(valid_samples)
         return average
     except ZeroDivisionError as e:
         print(f"Error: {e} - No valid samples for batch {batch} to calculate average ")
@@ -103,27 +116,43 @@ def plot_data(data, f):
     
     return f + ".pdf"
 
+# Komplettering
+def print_batch_average(dict):
+    """
+    Prints the average of each batch in a formatted way.
+    This function is separated from main() to allow for better organization and testing.
+    """
+    # uppgift 1 - uträkningen av medelvärde är flyttad till en egen funktion calculate_average
+    # uppgift 2 - exception handling för att hantera division med noll & unexpected errors
+    print("Batch\t Average")
+    # uppgift 3 - sorted batch data
+    for batch, sample in sorted(dict.items()):
+        average = calculate_average(batch, sample)
+        print(batch, "\t", average)
+
 def main():
     '''This is the main body of the program.'''
-    filename = input('Which csv file should be analyzed?')
+    #filename = input('Which csv file should be analyzed?')
+    filename = 'sample3.csv'  # Hardcoded for testing purposes
     sample_dict = {}
     # uppgift 1 - koden för att läsa filen är flyttat till functionen read_file()
     sample_list = read_file(filename)
+
+    # Komplettering
+    # Check if file was successfully read before processing
+    if not sample_list:
+        print("No data to process. Exiting.")
+        return
 
     # uppgift 1 - koden till for loopen är nu minskad pga att vi lagt viss kod i funktionen insert_sample_to_dict()
     for sample in sample_list:
         single_sample_list = sample.strip().split(',')
         sample_dict = insert_sample_to_dict(single_sample_list,sample_dict)
-    
-    # uppgift 1 - uträkningen av medelvärde är flyttad till en egen funktion calculate_average
-    # uppgift 2 - exception handling för att hantera division med noll & unexpected errors
-    print("Batch\t Average")
-    # uppgift 3 - sorted batch data
-    for batch, sample in sorted(sample_dict.items()): 
-        average = calculate_average(batch,sample)
-        print(batch, "\t", average)
- 
-    # uppgift 4 - plotta värden
+
+    # Komplettering
+    print_batch_average(sample_dict)
+
+    # uppgift 4 - plotta värden (only create PDF if data exists)
     print(f'A plot of the data can be found in {plot_data(sample_dict,filename[0:7])}')
  
 # Start the main program: this is idiomatic python
