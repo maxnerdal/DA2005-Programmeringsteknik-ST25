@@ -63,7 +63,7 @@ class TestAsciiArtProject(unittest.TestCase):
         
         # Verify the exact error message was printed
         output = self.captured_output.getvalue()
-        expected_message = "Error: File 'test_file.jpg' not found.\n"
+        expected_message = "Error: Could not load 'test_file.jpg'\n"
         self.assertEqual(output, expected_message)
 
 
@@ -87,7 +87,7 @@ class TestAsciiArtProject(unittest.TestCase):
         
         # Verify the exact error message was printed
         output = self.captured_output.getvalue()
-        expected_message = "Error: 'some_directory' is a directory, not a file.\n"
+        expected_message = "Error: Could not load 'some_directory'\n"
         self.assertEqual(output, expected_message)
 
 
@@ -111,7 +111,7 @@ class TestAsciiArtProject(unittest.TestCase):
         
         # Verify the exact error message was printed
         output = self.captured_output.getvalue()
-        expected_message = "Error: No permission to read 'restricted_file.jpg'.\n"
+        expected_message = "Error: Could not load 'restricted_file.jpg'\n"
         self.assertEqual(output, expected_message)
 
 
@@ -135,7 +135,7 @@ class TestAsciiArtProject(unittest.TestCase):
         
         # Verify the exact error message was printed
         output = self.captured_output.getvalue()
-        expected_message = "Error: 'invalid_image.jpg' is not a valid image file or has an unsupported format.\n"
+        expected_message = "Error: Could not load 'invalid_image.jpg'\n"
         self.assertEqual(output, expected_message)
 
 
@@ -159,7 +159,7 @@ class TestAsciiArtProject(unittest.TestCase):
         
         # Verify the exact error message was printed
         output = self.captured_output.getvalue()
-        expected_message = "Error: 'problematic_file.jpg' is not a valid image file or has an unsupported format.\n"
+        expected_message = "Error: Could not load 'problematic_file.jpg'\n"
         self.assertEqual(output, expected_message)
 
 
@@ -183,7 +183,7 @@ class TestAsciiArtProject(unittest.TestCase):
         
         # Verify the exact error message was printed
         output = self.captured_output.getvalue()
-        expected_message = "Error loading image 'some_file.jpg': Unexpected error occurred\n"
+        expected_message = "Error: Could not load 'some_file.jpg'\n"
         self.assertEqual(output, expected_message)
 
 

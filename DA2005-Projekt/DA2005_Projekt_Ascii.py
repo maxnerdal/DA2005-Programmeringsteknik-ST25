@@ -120,11 +120,6 @@ def main():
 
         # Console output for user interaction
         print("Welcome to ASCII Art Studio!\n")
-        print("1. Load image")
-        print("2. Render ASCII art")
-        print("3. Show image info")
-        print("4. Show menu")
-        print("5. Quit\n")
 
         # Initialize variables
         action_input = ""
@@ -134,34 +129,34 @@ def main():
         # Which conversion function to execute based on user input
         while True:
             try:
-                action_input = input("Type a number 1-5 according to what you want to do: ")
-                if action_input == "1": # call prompt_for_image function to load the image
-                    result = prompt_for_image()
-                    if result[0] is not None:  # Check if image was loaded successfully
-                        img, filename = result
-                elif action_input == "2": # call render_ascii_image function to render the ASCII art
+                
+                action_input = input("please use any of the following commands: load filename.jpg, render, info, quit:")
+                action_input = action_input.strip()
+
+                action_input = "load"                
+                if action_input[0:4] == "load": # call prompt_for_image function to load the image
+                    filename = action_input[5:].strip()
+                    img = load_image(filename) # call load_image function to load the image
+                    # Exception handling is done in load_image function
+                    if img:
+                        print(f"Image '{filename}' loaded successfully.")
+                        result = img, filename
+                elif action_input == "render": # call render_ascii_image function to render the ASCII art
                     if img is None:
-                        print("No image loaded. Please load an image first (option 1).")
+                        print("No image loaded. Please load an image first with command load filname.jpg")
                     else:
                         ascii_art = render_ascii_image(img)
                         if ascii_art:
                             print(ascii_art)
                         else:
                             print("Failed to render ASCII art.")
-                elif action_input == "3": # call info function to print image info
+                elif action_input == "info": # call info function to print image info
                     info(img, filename) 
-                elif action_input == "4": # Show the menu again
-                    print("Welcome to ASCII Art Studio!")
-                    print("1. Load image")
-                    print("2. Render ASCII art")
-                    print("3. Show image info")
-                    print("4. Show menu")
-                    print("5. Quit")
-                elif action_input == "5":
+                elif action_input == "quit":
                     print("Bye!")
                     break
                 else:
-                    print("Invalid option. Please choose 1-5.")
+                    print("Invalid option. Please type a valid command")
             except KeyboardInterrupt:
                 print("\nOperation cancelled. Goodbye!")
                 break
