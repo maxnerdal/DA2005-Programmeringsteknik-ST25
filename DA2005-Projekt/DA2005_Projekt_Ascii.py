@@ -70,7 +70,7 @@ def render_ascii_image(img, width=50):
 def info(img, filename=None):
     """Print information about the loaded image."""
     if img is None or not hasattr(img, 'size'):
-        print("No image loaded")
+        print("No image loaded. Please load an image first with command load filename.jpg")
     elif not hasattr(img.size, '__getitem__') or len(img.size) < 2:
         print("Invalid image object - missing size information")
     else:
@@ -79,28 +79,6 @@ def info(img, filename=None):
             print(f"Size: {img.size[0]}x{img.size[1]}")
         except (IndexError, TypeError) as e:
             print(f"Error accessing image size: {e}")
-
-def prompt_for_image():
-    """Prompt the user for an image filename and load the image."""
-    while True:
-        try:
-            filename = input("Input filename: ")
-            img = load_image(filename) # call load_image function to load the image
-            # Exception handling is done in load_image function
-            if img:
-                print(f"Image '{filename}' loaded successfully.")
-                return img, filename
-            else:
-                print("Please try again.")
-        except KeyboardInterrupt:
-            print("\nOperation cancelled by user.")
-            return None, None
-        except EOFError:
-            print("\nEnd of input reached.")
-            return None, None
-        except Exception as e:
-            print(f"Unexpected error during input: {e}")
-            print("Please try again.")
 
 def run_tests():
     """Run the unit tests for the ASCII art project."""
@@ -132,10 +110,9 @@ def main():
                 
                 action_input = input("please use any of the following commands: load filename.jpg, render, info, quit:")
                 action_input = action_input.strip()
-
-                action_input = "load"                
+               
                 if action_input[0:4] == "load": # call prompt_for_image function to load the image
-                    filename = action_input[5:].strip()
+                    filename = action_input[4:].strip()
                     img = load_image(filename) # call load_image function to load the image
                     # Exception handling is done in load_image function
                     if img:
